@@ -154,12 +154,6 @@ var stack_left = Composites.stack(100, 100, 3, 4, 100, 100, createGas);
 var stack_right = Composites.stack(500, 100, 3, 4, 100, 100, createGas);
 World.add(world, [stack_left, stack_right, sensor]);
 
-// histograms of the Maxwell-Boltzmann distributions
-var left_data = stack_left.bodies.map(body => body.speed);
-var right_data = stack_right.bodies.map(body => body.speed);
-Plotly.newPlot('left_plot', [{ x: left_data, type: 'histogram'}]);
-Plotly.newPlot('right_plot', [{ x: right_data, type: 'histogram'}]);
-
 // enforce elastic collisions
 // by looking at the velocity before the collision
 // and setting that to be the final velocity after
@@ -194,8 +188,14 @@ Events.on(engine, 'collisionEnd', function(event) {
                 y: pair.bodyA.velocity.y*speedMultiplier
             };
             Body.setVelocity(pair.bodyA, velocity);
-            var mem = document.createElement('li');
-            mem.appendChild(document.createTextNode(JSON.stringify(velocity)));
+            var mem = document.createElement('tr');
+            mem.className = 'table-danger';
+            var id = document.createElement('td');
+            id.appendChild(document.createTextNode(pair.bodyA.id));
+            mem.appendChild(id);
+            var speed = document.createElement('td');
+            speed.appendChild(document.createTextNode(pair.bodyA.speed));
+            mem.appendChild(speed);
             brain.appendChild(mem);
         }
         if (pair.bodyB.label === 'gas' && (pair.bodyA.label === 'wall' || pair.bodyA.label === 'door')) {
@@ -205,15 +205,17 @@ Events.on(engine, 'collisionEnd', function(event) {
                 y: pair.bodyB.velocity.y*speedMultiplier
             };
             Body.setVelocity(pair.bodyB, velocity);
-            var mem = document.createElement('li');
-            mem.appendChild(document.createTextNode(JSON.stringify(velocity)));
+            var mem = document.createElement('tr');
+            mem.className = 'table-danger';
+            var id = document.createElement('td');
+            id.appendChild(document.createTextNode(pair.bodyB.id));
+            mem.appendChild(id);
+            var speed = document.createElement('td');
+            speed.appendChild(document.createTextNode(pair.bodyB.speed));
+            mem.appendChild(speed);
             brain.appendChild(mem);
         }
     }
-    left_data = stack_left.bodies.map(body => body.speed);
-    right_data = stack_right.bodies.map(body => body.speed);
-    Plotly.react('left_plot', [{ x: left_data, type: 'histogram' }]);
-    Plotly.react('right_plot', [{ x: right_data, type: 'histogram' }]);
 });
 
 // AI for demon
@@ -262,7 +264,7 @@ Events.on(engine, 'collisionActive', function(event) {
         door.render.fillStyle = 'transparent';
         door.isSensor = true;
     }
-    if (brain.childElementCount >= 15) {
+    if (brain.childElementCount >= 10) {
         brain.textContent = '';
         erasures++;
         document.getElementById('erasures').innerHTML = erasures;

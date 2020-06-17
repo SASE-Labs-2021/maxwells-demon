@@ -1,18 +1,25 @@
 <html>
 	<head>
-		<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="https://bootswatch.com/4/default/bootstrap.css">
 	</head>
 	<body>
 		<div id="demon" style="float: left;">
-			<div id="left_plot" style="float: left;"></div>
-			<div id="right_plot" style="float: right;"></div>
 		</div>
 		<div style="float: right;">
-			<img src="brain.png">
-			<p>Memory erasures: <a id="erasures">0</a></p>
-			<ul id="brain">
-
-			</ul>
+			<h4>Memory erasures: <a id="erasures">0</a></h4>
+			<table class="table table-hover">
+				<thead>
+					<tr class="table-danger">
+						<th scope="col">Particle ID</th>
+						<th scope="col">Speed</th>
+					</tr>
+				</thead>
+				<tbody id="brain">
+				</tbody>
+			</table>
 		</div>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.14.2/matter.js"></script>
 		<script src="demon.js"></script>
